@@ -37,7 +37,7 @@ const StyledButton = styled.button`
 export default function Home (props: HomeProps) {
 
     const [searchTerm, setSearchTerm] = React.useState('');
-    const { searchResults, isFetching, error} = useAppSelector((state) => state.search)
+    const { searchResults, isFetching} = useAppSelector((state) => state.search)
     const dispatch = useAppDispatch();
 
 
@@ -46,7 +46,7 @@ export default function Home (props: HomeProps) {
     }
 
     const enterClicked = (e: any) => {
-        if (e && e.keyCode == 13) {
+        if (e && e.keyCode === 13) {
             if(searchTerm) {
                 search(dispatch, searchTerm)
             }
