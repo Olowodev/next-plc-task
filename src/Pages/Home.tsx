@@ -5,7 +5,6 @@ import { categories } from '../data';
 import styled from 'styled-components'
 import {InputAdornment} from '@mui/material'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import burna from '../Assets/burna.png'
 import ResultCard from '../Components/ResultCard'
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {search} from '../redux/apiCalls'
@@ -13,10 +12,6 @@ import {search} from '../redux/apiCalls'
 export interface HomeProps {
 }
 
-const Instruction = styled.p`
-    font-size = 50px;
-    text-align = center;
-`;
 
 const ContentDiv = styled.div`
     margin-top: 50px;
@@ -55,14 +50,13 @@ export default function Home (props: HomeProps) {
   return (
     <div>
       <Container>
-        <Instruction>CLICK ENTER TO SEARCH</Instruction>
         <TextFieldDiv>
             <TextField onKeyDown={(e)=>enterClicked(e)} fullWidth label="Search..." value={searchTerm} onChange={handleChange} InputProps={{
                     startAdornment: <InputAdornment position="start"><SearchOutlinedIcon /></InputAdornment>,
                 }}
             />
         </TextFieldDiv>
-        
+        <p>CLICK ENTER TO SEARCH</p>
         <ContentDiv>
             {searchTerm && isFetching === false ?
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px'}}>
