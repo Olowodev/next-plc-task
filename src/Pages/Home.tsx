@@ -80,7 +80,7 @@ export default function Home (props: HomeProps) {
         <ContentDiv>
             {searchTerm && isFetching === false ?
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px'}}>
-                {searchResults.length > 0 ? searchResults.map((searchResult: any, index: React.Key) => (
+                {searchResults ? searchResults.map((searchResult: any, index: React.Key) => (
                     <ResultCard key={index} trackName={searchResult.trackName} wrapperType={searchResult.wrapperType} artistName={searchResult.artistName} artworkUrl={searchResult.artworkUrl100} collectionName={searchResult.collectionName} />
                 )): 
                 <Loading>No Artists, Albums or Songs found</Loading>}
