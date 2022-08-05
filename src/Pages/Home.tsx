@@ -25,6 +25,15 @@ const Loading = styled.p`
     font-size: 50px
 `;
 
+const StyledButton = styled.button`
+    background-color: blue; 
+    padding: 0 40px; 
+    color: white; 
+    border-radius: 20px; 
+    border: none;
+    cursor: pointer;
+`;
+
 export default function Home (props: HomeProps) {
 
     const [searchTerm, setSearchTerm] = React.useState('');
@@ -44,6 +53,12 @@ export default function Home (props: HomeProps) {
         }
     }
 
+    const onClick = (e: any) => {
+        if(searchTerm) {
+            search(dispatch, searchTerm)
+        }
+    }
+
 
 
     
@@ -57,12 +72,18 @@ export default function Home (props: HomeProps) {
             />
         </TextFieldDiv>
         <p>CLICK ENTER TO SEARCH</p>
+        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            <StyledButton onClick={onClick}>
+                <p>SEARCH</p>
+            </StyledButton>
+        </div>
         <ContentDiv>
             {searchTerm && isFetching === false ?
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px'}}>
-                {searchResults ? searchResults.map((searchResult: any, index: React.Key) => (
+                {searchResults.length > 0 ? searchResults.map((searchResult: any, index: React.Key) => (
                     <ResultCard key={index} trackName={searchResult.trackName} wrapperType={searchResult.wrapperType} artistName={searchResult.artistName} artworkUrl={searchResult.artworkUrl100} collectionName={searchResult.collectionName} />
-                )): null}
+                )): 
+                <Loading>No Artists, Albums or Songs found</Loading>}
              {/*<ResultCard wrapperType='collection' artistName='Burna Boy' artworkUrl={burna} collectionName='Love, Damini' />
              <ResultCard wrapperType='collection' artistName='Burna Boy' artworkUrl={burna} collectionName='Love, Damini' />
              <ResultCard wrapperType='collection' artistName='Burna Boy' artworkUrl={burna} collectionName='Love, Damini' />
@@ -79,7 +100,7 @@ export default function Home (props: HomeProps) {
                 :
             <Grid container spacing={4}>
                 {categories.map((category, index) => (
-                    <Grid item md={6}>
+                    <Grid item xs={12} md={6}>
                         <Card {...category} key={category.id} />
                     </Grid>
                 ))}

@@ -16,10 +16,12 @@ const CardDiv = styled.div`
     background-image: url(${(props: StyledProp) => props.background});
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 100%;
+    background-size: 100% 100%;
     height: 200px;
     width: 100%;
     border-radius: 20px;
+
+
 `;
 
 const CardContainer = styled.div`
