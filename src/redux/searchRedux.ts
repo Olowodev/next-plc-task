@@ -1,24 +1,34 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios'
+import type { PayloadAction } from "@reduxjs/toolkit";
 
-export const search = createAsyncThunk('search', async (searchTerm) => {
-    const res = await axios.get(
+
+/*export const search = createAsyncThunk('search', async (searchTerm: string) => {
+    const {data, status} = await axios.get(
         'http://localhost:8000', 
-        searchTerm
+        { params: {searchTerm}}
     )  
-    return res.data.results;
-})
+    return data.results;
+})*/
+
+interface stateType {
+    searchResults: any,
+    isFetching: Boolean,
+    error: any
+}
+
+const initialState: stateType = {
+    searchResults: [],
+    isFetching: false,
+    error: null,
+}
 
 
 const searchSlice = createSlice ({
     name: 'search',
-    initialState: {
-        searchResults: [],
-        isFetching: false,
-        error: null,
-    },
+    initialState,
     reducers: {
-        /*searchStart: (state)=>{
+        searchStart: (state)=>{
             state.isFetching=true
         },
         searchSuccess: (state, action)=>{
@@ -29,24 +39,24 @@ const searchSlice = createSlice ({
         searchFailure: (state, action) => {
             state.isFetching=false;
             state.error= action.payload;
-            state.currentUser= null;
-        },*/
+            state.searchResults= null;
+        },
     },
-    extraReducers: {
-        [search.pending]: (state) => {
+    /*extraReducers: (builder) => {
+        builder.addCase(search.pending,  (state) => {
             state.isFetching = true;
             state.error = false;
-        },
-        [search.fulfilled]: (state, action) => {
+        })
+        builder.addCase(search.fulfilled, (state, action) => {
             state.isFetching = false;
             state.searchResults = action.payload;
             state.error = false;
-        },
-        [search.rejected]: (state, action) => {
+        })
+        builder.addCase(search.rejected, (state, action) => {
             state.isFetching = false;
             state.error = action.payload;
-        }
-    }
+        })
+    }*/
 });
 
 export const { searchStart,searchSuccess,searchFailure} = searchSlice.actions;

@@ -36,7 +36,10 @@ const Info = styled.div`
 
 //track || artist || collection
 const ResultCard = (props: Props) => {
+    
   return (
+    <>
+    {props.trackName !== 'Undefined' ?
     <Card>
         <CardContainer>
             <img src={props.artworkUrl} alt='preview' />
@@ -45,8 +48,9 @@ const ResultCard = (props: Props) => {
                 <p>{props.wrapperType === 'track' ? 'Song' : props.wrapperType === 'artist' ? 'Artist' : props.wrapperType === 'collection' ? 'Album' : null} {props.wrapperType === 'track' || 'collection' ? `. ${props.artistName}` : null}</p>
             </Info>
         </CardContainer>
-    </Card>
-  )
+    </Card>: null}
+    </>
+  ) 
 }
 
 export default ResultCard

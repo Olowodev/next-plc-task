@@ -7,8 +7,8 @@ import {InputAdornment} from '@mui/material'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import burna from '../Assets/burna.png'
 import ResultCard from '../Components/ResultCard'
-import { useDispatch, useSelector } from 'react-redux';
-import {search} from '../redux/searchRedux'
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import {search} from '../redux/apiCalls'
 
 export interface HomeProps {
 }
@@ -23,17 +23,20 @@ const TextFieldDiv = styled.div`
 
 export default function Home (props: HomeProps) {
 
-    const [search, setSearch] = React.useState();
-    const { searchResults, isFetching, error} = useSelector((state) => state.search)
-    const dispatch = useDispatch();
+    const [searchTerm, setSearchTerm] = React.useState('');
+    const { searchResults, isFetching, error} = useAppSelector((state) => state.search)
+    const dispatch = useAppDispatch();
 
 
     const handleChange = (e: any) => {
-        setSearch(e.target.value);
-        if (search) {
-            dispatch(search(search))
-        }
+        setSearchTerm(e.target.value);
     }
+
+    React.useEffect(() => {
+        if(searchTerm) {
+            search(dispatch, searchTerm)
+        }
+    }, [searchTerm, dispatch])
 
 
     
@@ -41,15 +44,19 @@ export default function Home (props: HomeProps) {
     <div>
       <Container>
         <TextFieldDiv>
-            <TextField fullWidth label="Search..." value={search} onChange={handleChange} InputProps={{
+            <TextField fullWidth label="Search..." value={searchTerm} onChange={handleChange} InputProps={{
                     startAdornment: <InputAdornment position="start"><SearchOutlinedIcon /></InputAdornment>,
                 }}
             />
         </TextFieldDiv>
+        
         <ContentDiv>
-            {search ?
+            {searchTerm && isFetching === false ?
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px'}}>
-            <ResultCard wrapperType='collection' artistName='Burna Boy' artworkUrl={burna} collectionName='Love, Damini' />
+                {searchResults ? searchResults.map((searchResult: any, index: React.Key) => (
+                    <ResultCard key={index} trackName={searchResult.trackName} wrapperType={searchResult.wrapperType} artistName={searchResult.artistName} artworkUrl={searchResult.artworkUrl100} collectionName={searchResult.collectionName} />
+                )): null}
+             {/*<ResultCard wrapperType='collection' artistName='Burna Boy' artworkUrl={burna} collectionName='Love, Damini' />
              <ResultCard wrapperType='collection' artistName='Burna Boy' artworkUrl={burna} collectionName='Love, Damini' />
              <ResultCard wrapperType='collection' artistName='Burna Boy' artworkUrl={burna} collectionName='Love, Damini' />
              <ResultCard wrapperType='collection' artistName='Burna Boy' artworkUrl={burna} collectionName='Love, Damini' />
@@ -57,13 +64,12 @@ export default function Home (props: HomeProps) {
              <ResultCard wrapperType='collection' artistName='Burna Boy' artworkUrl={burna} collectionName='Love, Damini' />
              <ResultCard wrapperType='collection' artistName='Burna Boy' artworkUrl={burna} collectionName='Love, Damini' />
              <ResultCard wrapperType='collection' artistName='Burna Boy' artworkUrl={burna} collectionName='Love, Damini' />
-             <ResultCard wrapperType='collection' artistName='Burna Boy' artworkUrl={burna} collectionName='Love, Damini' />
-             <ResultCard wrapperType='collection' artistName='Burna Boy' artworkUrl={burna} collectionName='Love, Damini' />
+                <ResultCard wrapperType='collection' artistName='Burna Boy' artworkUrl={burna} collectionName='Love, Damini' />*/}
             </div>
              
 
-            :
-            
+            : searchTerm && isFetching === true ? <p>LOading</p>
+                :
             <Grid container spacing={4}>
                 {categories.map((category, index) => (
                     <Grid item md={6}>
