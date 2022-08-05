@@ -32,11 +32,14 @@ export default function Home (props: HomeProps) {
         setSearchTerm(e.target.value);
     }
 
-    React.useEffect(() => {
-        if(searchTerm) {
-            search(dispatch, searchTerm)
+    const enterClicked = (e: any) => {
+        if (e && e.keyCode == 13) {
+            if(searchTerm) {
+                search(dispatch, searchTerm)
+            }
         }
-    }, [searchTerm, dispatch])
+    }
+
 
 
     
@@ -44,7 +47,7 @@ export default function Home (props: HomeProps) {
     <div>
       <Container>
         <TextFieldDiv>
-            <TextField fullWidth label="Search..." value={searchTerm} onChange={handleChange} InputProps={{
+            <TextField onKeyDown={(e)=>enterClicked(e)} fullWidth label="Search..." value={searchTerm} onChange={handleChange} InputProps={{
                     startAdornment: <InputAdornment position="start"><SearchOutlinedIcon /></InputAdornment>,
                 }}
             />
