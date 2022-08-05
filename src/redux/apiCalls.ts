@@ -6,7 +6,7 @@ import axios from 'axios'
 export const search = async (dispatch: any, searchTerm: any) => {
     dispatch(searchStart());
     try{
-        const res = await axios.get(`https://next-backend.netlify.app/${searchTerm}`)
+        const res = await axios.get(`https://next-plc-backend.herokuapp.com/${searchTerm}`)
         dispatch(searchSuccess(res.data.results))
         console.log(res)
     }catch(err: any){
