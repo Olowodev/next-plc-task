@@ -45,7 +45,7 @@ const ResultCard = (props: Props) => {
             <img src={props.artworkUrl} alt='preview' />
             <Info>
                 <p>{props.wrapperType === 'track' ? props.trackName : props.wrapperType === 'artist' ? props.artistName : props.wrapperType === 'collection' ? props.collectionName : null}</p>
-                <p>{props.wrapperType === 'track' ? 'Song' : props.wrapperType === 'artist' ? 'Artist' : props.wrapperType === 'collection' ? 'Album' : null} {props.wrapperType === 'track' || 'collection' ? `. ${props.artistName}` : null}</p>
+                <p>{props.wrapperType === 'track' ? 'track' : props.wrapperType === 'artist' ? 'Artist' : props.wrapperType === 'collection' ? 'Album' : null} {props.wrapperType === 'track' || 'collection' ? `. ${props.artistName}` : null}</p>
             </Info>
         </CardContainer>
     </Card>: null}

@@ -13,12 +13,21 @@ import {search} from '../redux/apiCalls'
 export interface HomeProps {
 }
 
+const Instruction = styled.p`
+    font-size = 50px;
+    text-align = center;
+`;
+
 const ContentDiv = styled.div`
     margin-top: 50px;
 `;
 
 const TextFieldDiv = styled.div`
     margin-top: 50px
+`;
+
+const Loading = styled.p`
+    font-size: 50px
 `;
 
 export default function Home (props: HomeProps) {
@@ -46,6 +55,7 @@ export default function Home (props: HomeProps) {
   return (
     <div>
       <Container>
+        <Instruction>CLICK ENTER TO SEARCH</Instruction>
         <TextFieldDiv>
             <TextField onKeyDown={(e)=>enterClicked(e)} fullWidth label="Search..." value={searchTerm} onChange={handleChange} InputProps={{
                     startAdornment: <InputAdornment position="start"><SearchOutlinedIcon /></InputAdornment>,
@@ -71,7 +81,7 @@ export default function Home (props: HomeProps) {
             </div>
              
 
-            : searchTerm && isFetching === true ? <p>LOading</p>
+            : searchTerm && isFetching === true ? <Loading>LoAdInG</Loading>
                 :
             <Grid container spacing={4}>
                 {categories.map((category, index) => (
