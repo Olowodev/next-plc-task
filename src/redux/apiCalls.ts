@@ -9,7 +9,7 @@ import axios from 'axios'
 export const search = async (dispatch: any, searchTerm: any) => {
     dispatch(searchStart());
     try{
-        const res = await axios.get(`http://localhost:8000/${searchTerm}`)
+        const res = await axios.get(`https://www.next-plc-backend.com/${searchTerm}`)
         const results = res.data.results
         dispatch(searchSuccess(results))
         
