@@ -8,6 +8,7 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import ResultCard from '../Components/ResultCard'
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {search} from '../redux/apiCalls'
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 export interface HomeProps {
 }
@@ -34,11 +35,41 @@ const StyledButton = styled.button`
     cursor: pointer;
 `;
 
+const LIMIT = 10
+
+
 export default function Home (props: HomeProps) {
+
 
     const [searchTerm, setSearchTerm] = React.useState('');
     const { searchResults, isFetching} = useAppSelector((state) => state.search)
     const dispatch = useAppDispatch();
+
+    const [filteredResults, setFilteredResults] = React.useState(searchResults.slice(0, LIMIT));
+    const [visible, setVisible] = React.useState(LIMIT)
+    const [hasMore, setHasMore] = React.useState(true)
+
+    console.log(filteredResults)
+
+    React.useEffect(() => {
+      setFilteredResults(searchResults.slice(0, LIMIT));
+    }, [searchResults])
+    
+
+    const fetchMoreData = () => {
+        const newLimit = visible + LIMIT
+        const dataToAdd = searchResults.slice(visible, newLimit)
+
+        if (searchResults.length > filteredResults.length) {
+            setTimeout(() => {
+                setFilteredResults([...filteredResults].concat(dataToAdd))
+            }, 2000);
+            setVisible(newLimit)
+            setHasMore(true)
+        } else {
+            setHasMore(false)
+        }
+    }
 
 
     const handleChange = (e: any) => {
@@ -79,10 +110,18 @@ export default function Home (props: HomeProps) {
         </div>
         <ContentDiv>
             {searchTerm && isFetching === false ?
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px'}}>
-                {searchResults ? searchResults.map((searchResult: any, index: React.Key) => (
+            <div >
+                {filteredResults ? 
+                <InfiniteScroll 
+                    dataLength={filteredResults.length}
+                    next={fetchMoreData}
+                    hasMore={hasMore}
+                    loader={<h1>LoAdInG...</h1>}
+                    style={{ display: 'flex', flexDirection: 'column', gap: '20px'}}>
+                     {filteredResults.map((searchResult: any, index: React.Key) => (
                     <ResultCard key={index} trackName={searchResult.trackName} wrapperType={searchResult.wrapperType} artistName={searchResult.artistName} artworkUrl={searchResult.artworkUrl100} collectionName={searchResult.collectionName} />
-                )): 
+                ))}
+                </InfiniteScroll>: 
                 <Loading>No Artists, Albums or Songs found</Loading>}
              {/*<ResultCard wrapperType='collection' artistName='Burna Boy' artworkUrl={burna} collectionName='Love, Damini' />
              <ResultCard wrapperType='collection' artistName='Burna Boy' artworkUrl={burna} collectionName='Love, Damini' />
